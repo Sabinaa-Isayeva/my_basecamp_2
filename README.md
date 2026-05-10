@@ -15,6 +15,8 @@ The application follows a clear **MVC architecture**:
 
 Key features include user registration, login/logout, admin role management (promote/demote users), and full CRUD for projects with owner-based access control. The first registered user becomes admin automatically, and admins can manage users and all projects from the interface.
 
+MyBasecamp2 extends the original project with attachments, discussion threads, and thread messages. Users who can access a project can add and delete attachments, project admins can create, edit, and delete threads, and users can post, edit, and delete messages inside each thread.
+
 ## Installation
 ```bash
 # Open the project folder
@@ -43,6 +45,12 @@ On first use, no default admin account is pre-created. Instead:
 From there you can register new users, sign in, manage roles from the users page, and create or manage projects. Only project owners (or admins) can edit or delete a project. Passwords must be at least 4 characters long.
 
 If the project is run from a OneDrive folder on Windows, the app automatically stores the SQLite database in a temporary local folder to avoid SQLite file locking issues.
+
+## Cloud Deployment
+
+Live project link:
+
+https://mybasecamp2-production.up.railway.app
 
 ### The Core Team
 Sebine Isayeva,  Lale Nasibova
