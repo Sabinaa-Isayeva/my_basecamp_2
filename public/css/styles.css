@@ -1,0 +1,19 @@
+body {
+  min-height: 100vh;
+}
+
+.hero-card {
+  border: 1px solid #e9ecef;
+}
+
+.simple-list {
+  padding-left: 1.2rem;
+}
+
+.simple-list li + li {
+  margin-top: 0.5rem;
+}
+
+.project-description {
+  white-space: pre-wrap;
+}

@@ -1,0 +1,136 @@
+<%- include("../partials/header", { pageTitle }) %>
+
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h2 mb-1"><%= project.title %></h1>
+        <p class="text-secondary mb-0">Owner: <%= project.owner.name %></p>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="/projects/<%= project.id %>/edit" class="btn btn-outline-secondary">
+          Edit
+        </a>
+        <form action="/projects/<%= project.id %>?_method=DELETE" method="POST">
+          <button class="btn btn-outline-danger" type="submit">Delete</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="project-description p-3 rounded-3 bg-body-tertiary">
+      <p class="mb-0"><%= project.description || "No description added." %></p>
+    </div>
+
+    <hr class="my-4" />
+
+    <div>
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+          <h2 class="h4 mb-1">Attachments</h2>
+          <p class="text-secondary mb-0">Add files connected to this project.</p>
+        </div>
+      </div>
+
+      <form action="/projects/<%= project.id %>/attachments" method="POST" class="row g-2 mb-4">
+        <div class="col-md-6">
+          <label class="form-label" for="fileName">File name</label>
+          <input
+            class="form-control"
+            id="fileName"
+            name="fileName"
+            placeholder="example.pdf"
+            required
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label" for="format">Format</label>
+          <select class="form-select" id="format" name="format" required>
+            <option value="">Choose format</option>
+            <option value="pdf">PDF</option>
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+            <option value="txt">TXT</option>
+            <option value="docx">DOCX</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+          <button class="btn btn-primary w-100" type="submit">Add</button>
+        </div>
+      </form>
+
+      <% if (!project.attachments || project.attachments.length === 0) { %>
+        <div class="alert alert-light border mb-0">
+          No attachments yet.
+        </div>
+      <% } else { %>
+        <div class="list-group">
+          <% project.attachments.forEach(function(attachment) { %>
+            <div class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <div>
+                <strong><%= attachment.fileName %></strong>
+                <span class="badge text-bg-secondary ms-2"><%= attachment.format %></span>
+                <div class="small text-secondary">
+                  Added by <%= attachment.user ? attachment.user.name : "Unknown user" %>
+                </div>
+              </div>
+
+              <form
+                action="/projects/<%= project.id %>/attachments/<%= attachment.id %>?_method=DELETE"
+                method="POST"
+                class="m-0"
+              >
+                <button class="btn btn-sm btn-outline-danger" type="submit">
+                  Delete
+                </button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <hr class="my-4" />
+
+    <div>
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+          <h2 class="h4 mb-1">Threads</h2>
+          <p class="text-secondary mb-0">Discuss this project with your team.</p>
+        </div>
+
+        <a href="/projects/<%= project.id %>/threads/new" class="btn btn-primary">
+          New Thread
+        </a>
+      </div>
+
+      <% if (!project.threads || project.threads.length === 0) { %>
+        <div class="alert alert-light border mb-0">
+          No threads yet.
+        </div>
+      <% } else { %>
+        <div class="list-group">
+          <% project.threads.forEach(function(thread) { %>
+            <a
+              href="/projects/<%= project.id %>/threads/<%= thread.id %>"
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap gap-2"
+            >
+              <div>
+                <strong><%= thread.title %></strong>
+                <div class="small text-secondary">
+                  Created by <%= thread.user ? thread.user.name : "Unknown user" %>
+                </div>
+              </div>
+              <span class="badge text-bg-primary">Open</span>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>

@@ -1,0 +1,105 @@
+<%- include("../partials/header", { pageTitle }) %>
+
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h3 mb-1"><%= thread.title %></h1>
+        <p class="text-secondary mb-0">
+          Project:
+          <a href="/projects/<%= project.id %>"><%= project.title %></a>
+        </p>
+        <p class="text-secondary mb-0">
+          Created by <%= thread.user ? thread.user.name : "Unknown user" %>
+        </p>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a
+          href="/projects/<%= project.id %>/threads/<%= thread.id %>/edit"
+          class="btn btn-outline-secondary"
+        >
+          Edit
+        </a>
+
+        <form
+          action="/projects/<%= project.id %>/threads/<%= thread.id %>?_method=DELETE"
+          method="POST"
+          class="m-0"
+        >
+          <button class="btn btn-outline-danger" type="submit">Delete</button>
+        </form>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div>
+      <h2 class="h4 mb-3">Messages</h2>
+
+      <form
+        action="/projects/<%= project.id %>/threads/<%= thread.id %>/messages"
+        method="POST"
+        class="mb-4"
+      >
+        <div class="mb-3">
+          <label class="form-label" for="body">New message</label>
+          <textarea
+            class="form-control"
+            id="body"
+            name="body"
+            rows="3"
+            placeholder="Write your message..."
+            required
+          ></textarea>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Post Message</button>
+      </form>
+
+      <% if (!thread.messages || thread.messages.length === 0) { %>
+        <div class="alert alert-light border mb-0">
+          No messages yet.
+        </div>
+      <% } else { %>
+        <div class="list-group">
+          <% thread.messages.forEach(function(message) { %>
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <strong><%= message.user ? message.user.name : "Unknown user" %></strong>
+                  <div class="text-secondary small">
+                    <%= message.createdAt.toLocaleString() %>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <a
+                    href="/projects/<%= project.id %>/threads/<%= thread.id %>/messages/<%= message.id %>/edit"
+                    class="btn btn-sm btn-outline-secondary"
+                  >
+                    Edit
+                  </a>
+
+                  <form
+                    action="/projects/<%= project.id %>/threads/<%= thread.id %>/messages/<%= message.id %>?_method=DELETE"
+                    method="POST"
+                    class="m-0"
+                  >
+                    <button class="btn btn-sm btn-outline-danger" type="submit">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <p class="mb-0 mt-3"><%= message.body %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>
